@@ -15,8 +15,9 @@ namespace TaskList
             new SetTask("Jean", "Code some more", DateTime.Parse("10/27/2020")),
             new SetTask("Grant", "Update student workbooks", DateTime.Parse("11/12/2020")),
         };
-
-            Console.WriteLine($"Welcome to the Task Manager!" + Environment.NewLine);
+            Console.WriteLine("==============================================\n");
+            Console.WriteLine($"\tWelcome to the Task Manager!" + Environment.NewLine);
+            Console.WriteLine("==============================================\n");
             bool userContinue = true;
             while (userContinue)
             {
@@ -24,10 +25,12 @@ namespace TaskList
                 string input = GetUserInput($"\nWhat would you like to do? ");
                 if (input == "1")
                 {
-                    input = GetUserInput("\nWould you like to lists tasks by number or name? ").ToLower();
+                    Console.Clear();
+                    input = GetUserInput("\nWould you like to lists tasks by number or name? [Enter 'name' or 'number'] ").ToLower();
 
                     if (input == "name" || input == "number") 
-                    { 
+                    {
+                        Console.Clear();
                         Console.WriteLine("\n================== TASK LIST =================");
                         ListTasks(tasks, input);
                         Console.WriteLine("==============================================\n");
@@ -39,6 +42,7 @@ namespace TaskList
                 }
                 else if (input == "2")
                 {
+                    Console.Clear();
                     Console.WriteLine("\n================== ADD TASK ==================\n");
                     input = GetUserInput("Team Member: ");
                     tasks.Add(AddTask(input));
@@ -46,6 +50,7 @@ namespace TaskList
                 }
                 else if (input == "3")
                 {
+                    Console.Clear();
                     Console.WriteLine("\n================ DELETE TASK =================\n");
 
                     for (int i = 0; i < tasks.Count; i++)
@@ -72,6 +77,7 @@ namespace TaskList
                 }
                 else if (input == "4")
                 {
+                    Console.Clear();
                     Console.WriteLine("\n============== MARK AS COMPLETED =============\n");
                     for (int i = 0; i < tasks.Count; i++)
                     {
@@ -97,7 +103,7 @@ namespace TaskList
                 }
                 else if (input == "5")
                 {
-
+                    Console.Clear();
                     Console.WriteLine("\n================== EDIT TASK =================\n");
                     for (int i = 0; i < tasks.Count; i++)
                     {
@@ -118,6 +124,7 @@ namespace TaskList
                         input = GetUserInput("Okay, let's change the name. Please enter a new name: ");
                         tasks[index].Name = input;
                         Console.WriteLine("\n============ Task has been edited! ===========\n");
+                        Console.Clear();
                     }
                     else if (input == "description" || input == "2")
                     {

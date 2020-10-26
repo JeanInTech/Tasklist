@@ -27,9 +27,18 @@ namespace TaskList
                 string input = GetUserInput($"\nWhat would you like to do? ");
                 if (input == "1")
                 {
-                    Console.WriteLine("\n================== TASK LIST =================");
-                    ListTasks(tasks);
-                    Console.WriteLine("==============================================\n");
+                    input = GetUserInput("\nWould you like to lists tasks by number or name? ").ToLower();
+
+                    if (input == "name" || input == "number") 
+                    { 
+                        Console.WriteLine("\n================== TASK LIST =================");
+                        ListTasks(tasks, input);
+                        Console.WriteLine("==============================================\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nInvalid input, please try again.\n");
+                    }
                 }
                 else if (input == "2")
                 {
@@ -89,44 +98,44 @@ namespace TaskList
                         Console.WriteLine("\n====== Task completion has been canceled! ======\n");
                     }
                 }
-                else if (input == "5")
-                {
+                //else if (input == "5")
+                //{
 
-                    Console.WriteLine("\n================== EDIT TASK =================\n");
-                    for (int i = 0; i < tasks.Count; i++)
-                    {
-                        Console.WriteLine($"Task {i + 1}. {tasks[i].Name}: {tasks[i].Description} [due: {tasks[i].DueDate:d}] || status: {IsItCompleted(tasks, i, tasks[i].Completed)}]\n");
-                    }
-                    input = GetUserInput($"\nWhich task would you like to edit? [Select 1-{tasks.Count}] ");
-                    int index = ParseInput(input, tasks) - 1;
+                //    Console.WriteLine("\n================== EDIT TASK =================\n");
+                //    for (int i = 0; i < tasks.Count; i++)
+                //    {
+                //        Console.WriteLine($"Task {i + 1}. {tasks[i].Name}: {tasks[i].Description} [due: {tasks[i].DueDate:d}] || status: {IsItCompleted(tasks, i, tasks[i].Completed)}]\n");
+                //    }
+                //    input = GetUserInput($"\nWhich task would you like to edit? [Select 1-{tasks.Count}] ");
+                //    int index = ParseInput(input, tasks) - 1;
                     
-                    Console.WriteLine("\nYou have selected the following line:");
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"\n   Task {index + 1}. {tasks[index].Name}: {tasks[index].Description} [due: {tasks[index].DueDate:d} || status: {IsItCompleted(tasks, index, tasks[index].Completed)}]\n");
-                    Console.ResetColor();
-                    //
+                //    Console.WriteLine("\nYou have selected the following line:");
+                //    Console.ForegroundColor = ConsoleColor.Yellow;
+                //    Console.WriteLine($"\n   Task {index + 1}. {tasks[index].Name}: {tasks[index].Description} [due: {tasks[index].DueDate:d} || status: {IsItCompleted(tasks, index, tasks[index].Completed)}]\n");
+                //    Console.ResetColor();
+                //    //
 
 
-                    //
-                    input = GetUserInput("What would you like to edit? Please enter [1. Name, 2. Description, 3. Due Date, 4. Status or 5. Cancel]").ToLower();
-                    EditTask(input, index, tasks);
-                    //
+                //    //
+                //    input = GetUserInput("What would you like to edit? Please enter [1. Name, 2. Description, 3. Due Date, 4. Status or 5. Cancel]").ToLower();
+                //    EditTask(input, index, tasks);
+                //    //
 
 
 
-                    //
-                    input = GetUserInput("To continue, please enter [y]: ");
-                    if (input == "y")
-                    {
-                        tasks[index].Completed = true;
-                        Console.WriteLine("\n============ Task has been edited! ===========\n");
+                //    //
+                //    input = GetUserInput("To continue, please enter [y]: ");
+                //    if (input == "y")
+                //    {
+                //        tasks[index].Completed = true;
+                //        Console.WriteLine("\n============ Task has been edited! ===========\n");
 
-                    }
-                    else
-                    {
-                        Console.WriteLine("\n====== Task editing has been canceled! =======\n");
-                    }
-                }
+                //    }
+                //    else
+                //    {
+                //        Console.WriteLine("\n====== Task editing has been canceled! =======\n");
+                //    }
+               // }
                 else if (input == "6")
                 {
                     userContinue = false;
@@ -149,25 +158,53 @@ namespace TaskList
             string input = Console.ReadLine().Trim();
             return input;
         }
-        public static void ListTasks(List<SetTask> list)
+        public static void ListTasks(List<SetTask> list, string input)
         {
             Console.WriteLine();
-            for (int i = 0; i < list.Count; i++)
+            if (input == "number") 
             {
-                Console.WriteLine($"   Task {i+1} - Due: {list[i].DueDate:d}");
-                Console.WriteLine($"   Team Member: {list[i].Name}");
-                Console.WriteLine($"   Task Description: {list[i].Description}");
-                if (list[i].Completed)
+                for (int i = 0; i < list.Count; i++)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"   Status: Finished!\n");
-                    Console.ResetColor();
+                    Console.WriteLine($"   Task {i + 1} - Due: {list[i].DueDate:d}");
+                    Console.WriteLine($"   Team Member: {list[i].Name}");
+                    Console.WriteLine($"   Task Description: {list[i].Description}");
+                    if (list[i].Completed)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"   Status: Finished!\n");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"   Status: Not finished\n");
+                        Console.ResetColor();
+                    }
                 }
-                else
+            } 
+            else if (input == "name")
+            {
+                string name = GetUserInput("What's the name of this team member? ");
+                for (int i = 0; i < list.Count; i++)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"   Status: Not finished\n");
-                    Console.ResetColor();
+                    if(name == list[i].Name)
+                    {
+                        Console.WriteLine($"   Team Member: {list[i].Name}");
+                        Console.WriteLine($"   Due: {list[i].DueDate:d}");
+                        Console.WriteLine($"   Task Description: {list[i].Description}");
+                        if (list[i].Completed)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"   Status: Finished!\n");
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"   Status: Not finished\n");
+                            Console.ResetColor();
+                        }
+                    }
                 }
             }
         }
@@ -209,39 +246,42 @@ namespace TaskList
 
             return new SetTask(name, description, dueDate);
         }
-        public SetTask EditTask(string input, int index, List<SetTask> tasks)
-        //input = GetUserInput("What would you like to edit? Please enter [1. Name, 2. Description, 3. Due Date, 4. Status or 5. Cancel]");
-        {
-            while (true)
-            {
-                if(input == "name" || input == "1")
-                {
+        //public SetTask EditTask(string input, int index, List<SetTask> tasks)
+        ////input = GetUserInput("What would you like to edit? Please enter [1. Name, 2. Description, 3. Due Date, 4. Status or 5. Cancel]");
+        //{
+        //    while (true)
+        //    {
+        //        if(input == "name" || input == "1")
+        //        {
+        //            input = GetUserInput("Okay, let's change the name. Please enter a new name: ");
+        //            tasks.Add(input, tasks.)
 
-                }
-                else if(input == "description" || input == "2")
-                {
+                    
+        //        }
+        //        else if(input == "description" || input == "2")
+        //        {
 
-                }
-                else if(input == "due date" || input == "3")
-                {
+        //        }
+        //        else if(input == "due date" || input == "3")
+        //        {
 
-                }
-                else if(input == "status" || input == "4")
+        //        }
+        //        else if(input == "status" || input == "4")
 
-                {
+        //        {
 
-                }
-                else if(input == "cancel" || input == "5")
-                {
+        //        }
+        //        else if(input == "cancel" || input == "5")
+        //        {
 
-                }
-                else
-                {
-                    input = GetUserInput("Invalid input. Please enter [1. Name, 2. Description, 3. Due Date, 4. Status or 5. Cancel]").ToLower();
-                    continue;
-                }
-            }
-        }
+        //        }
+        //        else
+        //        {
+        //            input = GetUserInput("Invalid input. Please enter [1. Name, 2. Description, 3. Due Date, 4. Status or 5. Cancel]").ToLower();
+        //            continue;
+        //        }
+        //    }
+        //}
         public static string ValidateInput(string input)
         {
             while (true)
